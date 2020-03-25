@@ -3,13 +3,18 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const cors = require('cors')
 const middlewares = require('./middlewares')
+const mongoose = require('mongoose')
+require('dotenv').config()
+const logs = require('./api/logs')
 
 const app = express()
 app.use(morgan('common'))
 app.use(helmet())
 app.unsubscribe(cors({
-    origin: 'http://localhost:3000'
+    origin: process.env.CORS_ORIGIN
 }))
+
+mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 app.get('/', (req, res) => {
@@ -17,6 +22,8 @@ app.get('/', (req, res) => {
         message: 'Hello, World!'
     })
 })
+
+app.use('/api/logs', logs)
 
 
 app.use(middlewares.notFound)
