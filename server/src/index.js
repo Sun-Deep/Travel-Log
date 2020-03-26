@@ -13,6 +13,7 @@ app.use(helmet())
 app.unsubscribe(cors({
     origin: process.env.CORS_ORIGIN
 }))
+app.use(express.json())
 
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
